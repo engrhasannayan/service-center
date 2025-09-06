@@ -1,0 +1,128 @@
+<div class="bg-white rounded-xl shadow-md p-6">
+  <h1 class="text-2xl font-bold mb-1">Create account</h1>
+  <p class="text-sm text-gray-600 mb-6">Join us in a few seconds.</p>
+
+  <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="space-y-4">
+    <!-- Full name -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Full name</label>
+      <input
+        formControlName="fullName"
+        type="text"
+        placeholder="Jane Doe"
+        class="w-full rounded-md border px-3 py-2 text-sm
+               placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500
+               focus:border-blue-500"
+        [ngClass]="{
+          'border-gray-300': !(f.fullName.touched && f.fullName.invalid),
+          'border-red-500': f.fullName.touched && f.fullName.invalid
+        }"
+      />
+      <div class="mt-1 text-xs text-red-600" *ngIf="f.fullName.touched && f.fullName.invalid">
+        <span *ngIf="f.fullName.errors?.['required']">Full name is required.</span>
+        <span *ngIf="f.fullName.errors?.['minlength']">Minimum 3 characters.</span>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Your email</label>
+      <input
+        formControlName="email"
+        type="email"
+        placeholder="name@company.com"
+        class="w-full rounded-md border px-3 py-2 text-sm
+               placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500
+               focus:border-blue-500"
+        [ngClass]="{
+          'border-gray-300': !(f.email.touched && f.email.invalid),
+          'border-red-500': f.email.touched && f.email.invalid
+        }"
+      />
+      <div class="mt-1 text-xs text-red-600" *ngIf="f.email.touched && f.email.invalid">
+        <span *ngIf="f.email.errors?.['required']">Email is required.</span>
+        <span *ngIf="f.email.errors?.['email']">Enter a valid email address.</span>
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Password</label>
+      <input
+        formControlName="password"
+        type="password"
+        placeholder="••••••••"
+        class="w-full rounded-md border px-3 py-2 text-sm
+               placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500
+               focus:border-blue-500"
+        [ngClass]="{
+          'border-gray-300': !(f.password.touched && f.password.invalid),
+          'border-red-500': f.password.touched && f.password.invalid
+        }"
+      />
+      <div class="mt-1 text-xs text-gray-500">
+        Must be 8+ characters, include 1 uppercase letter and 1 number.
+      </div>
+      <div class="mt-1 text-xs text-red-600" *ngIf="f.password.touched && f.password.invalid">
+        <span *ngIf="f.password.errors?.['required']">Password is required.</span>
+        <span *ngIf="f.password.errors?.['minlength']">Minimum 8 characters.</span>
+        <span *ngIf="f.password.errors?.['pattern']">Doesn’t meet complexity rules.</span>
+      </div>
+    </div>
+
+    <!-- Confirm password -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Confirm password</label>
+      <input
+        formControlName="confirmPassword"
+        type="password"
+        placeholder="••••••••"
+        class="w-full rounded-md border px-3 py-2 text-sm
+               placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500
+               focus:border-blue-500"
+        [ngClass]="{
+          'border-gray-300': !(f.confirmPassword.touched && f.confirmPassword.invalid) && !(form.touched && form.errors?.['fieldsMismatch']),
+          'border-red-500': f.confirmPassword.touched && f.confirmPassword.invalid || (form.touched && form.errors?.['fieldsMismatch'])
+        }"
+      />
+      <div class="mt-1 text-xs text-red-600" *ngIf="f.confirmPassword.touched && f.confirmPassword.invalid">
+        <span *ngIf="f.confirmPassword.errors?.['required']">Please confirm your password.</span>
+      </div>
+      <div class="mt-1 text-xs text-red-600" *ngIf="form.touched && form.errors?.['fieldsMismatch']">
+        Passwords do not match.
+      </div>
+    </div>
+
+    <!-- Terms -->
+    <div class="flex items-start gap-2">
+      <input id="terms" type="checkbox" formControlName="terms" class="mt-1" />
+      <label for="terms" class="text-sm text-gray-700">
+        I agree to the <a class="text-blue-600 underline" href="#">Terms &amp; Conditions</a>.
+      </label>
+    </div>
+    <div class="mt-[-6px] text-xs text-red-600" *ngIf="f.terms.touched && f.terms.errors">
+      You must accept the terms.
+    </div>
+
+    <!-- Submit -->
+    <button
+      type="submit"
+      class="w-full rounded-md bg-blue-600 text-white font-medium py-2
+             hover:bg-blue-700 transition-colors
+             disabled:opacity-50 disabled:cursor-not-allowed"
+      [disabled]="form.invalid || submitting()"
+    >
+      {{ submitting() ? 'Creating account…' : 'Create account' }}
+    </button>
+
+    <!-- Feedback -->
+    <p class="text-red-600 text-sm mt-2" *ngIf="errorMsg()">{{ errorMsg() }}</p>
+    <p class="text-green-600 text-sm mt-2" *ngIf="success()">✅ Registration successful!</p>
+
+    <!-- Link -->
+    <p class="text-sm text-gray-700 mt-4 text-center">
+      Already have an account?
+      <a routerLink="/" class="text-blue-600 underline">Sign in</a>
+    </p>
+  </form>
+</div>
